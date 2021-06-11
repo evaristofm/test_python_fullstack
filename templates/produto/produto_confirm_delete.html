@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+    <h3>Você tem certeza de que desesa deletar o produto "{{product}}" ? </h3>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger btn-sm" value="Deletar">
+        <a class="btn btn-primary btn-sm" href="{% url 'product:all-products'%}">Voltar</a>
+    </form>
+
+{% endblock %}

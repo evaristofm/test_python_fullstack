@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<div>
+
+    <h1>Form</h1>
+
+    
+    <form method="post">
+        {% csrf_token %}
+        
+        {{ form|crispy  }} <br>
+        
+        <input type="submit" value="Enviar">
+        <a class="btn btn-primary btn-sm" href="{% url 'product:all-products'%}">Voltar</a>
+    </form>
+</div>
+{% endblock %}
