@@ -1,3 +1,5 @@
+import requests
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, FormView
 from django.views.generic.edit import ( 
@@ -10,6 +12,16 @@ from django.contrib.auth import login
 
 from .models import Produto
 
+
+def produtos(request):
+    r = requests.get('https://no2gru7ua3.execute-api.us-east-1.amazonaws.com/')
+    produtos = r.json()
+    context = {'produtos': produtos}
+
+    for produto in produtos['produtos']:
+       context.update(produto)    
+    print(context)
+    return render(request, "produto/produto_list2.html", context)
 
 class CustomLoginView(LoginView):
     template_name = 'produto/login.html'
@@ -31,11 +43,20 @@ class RegisterPage(FormView):
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
 
-
 class ProductListView(LoginRequiredMixin, ListView):
     model = Produto
     context_object_name = 'products'
     paginate_by = 5
+
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        r = requests.get('https://no2gru7ua3.execute-api.us-east-1.amazonaws.com/')
+        produtos = r.json()
+        
+        context['produtos'] = produtos
+        return context  
+    
 
 class ProductDetail(LoginRequiredMixin, DetailView):
     model = Produto
@@ -52,12 +73,13 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     context_object_name = 'product'
     success_url = reverse_lazy('product:all-products')
 
+
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Produto
     fields = '__all__'
     context_object_name = 'product'
     success_url = reverse_lazy('product:all-products')
+    
 
- 
 
 

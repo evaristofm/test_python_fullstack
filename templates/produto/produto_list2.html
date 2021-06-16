@@ -19,21 +19,19 @@
 <hr>
 <h1>Listagem de Produtos</h1>
 
- <a style="padding: 20px;" href="{% url 'product:product-create' %}" class="btn btn-outline-primary btn-sm">Add Produto</a>
+<!-- <a style="padding: 20px;" href="{% url 'product:product-create' %}" class="btn btn-outline-primary btn-sm">Add Produto</a> -->
 <div> <br>
     
     <ol class="list-group list-group-numbered">
-      {% for produto in produtos.produtos %}
+      {% for produto in produtos.produtos%}
         <li class="list-group-item d-flex justify-content-between align-items-start">
               <div class="ms-2 me-auto">
-               <a href="#">
+               
                   <div class="fw-bold">{{ produto.produto }}</div>
                 </a>
-                {{ produto.descricao|truncatewords:10|linebreaks }}
               </div>
             <div class="links">
-           <a href="#"><span class="badge bg-warning rounded-pill">Editar</span></a>
-              <a href="#"><span class="badge bg-danger rounded-pill">Deletar</span></a> 
+          
               </a><span class="badge bg-primary rounded-pill">R$ {{produto.valor}}</span>
           </div>
         </li>
