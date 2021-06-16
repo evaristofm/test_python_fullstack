@@ -13,6 +13,7 @@ from django.contrib.auth import login
 from .models import Produto
 
 
+
 def produtos(request):
     r = requests.get('https://no2gru7ua3.execute-api.us-east-1.amazonaws.com/')
     produtos = r.json()
@@ -23,6 +24,9 @@ def produtos(request):
     print(context)
     return render(request, "produto/produto_list2.html", context)
 
+
+# View responśavel pelo login e redirecionar para pág principal
+
 class CustomLoginView(LoginView):
     template_name = 'produto/login.html'
     fields = '__all__'
@@ -31,17 +35,22 @@ class CustomLoginView(LoginView):
     def get_success_url(self):
         return reverse_lazy('product:all-products')
 
+# View responśavel pelo cadastro de novos usuários
 class RegisterPage(FormView):
     template_name = 'produto/register.html'
     form_class = UserCreationForm
     redirect_authenticated_user = True
     success_url = reverse_lazy('product:all-products')
 
+    # Sobrescrevendo o método para verificar e logar o usuário 
+    # e salvar o formulário de registro
     def form_valid(self, form):
         user = form.save()
         if user is not None:
             login(self.request, user)
         return super(RegisterPage, self).form_valid(form)
+
+
 
 class ProductListView(LoginRequiredMixin, ListView):
     model = Produto
