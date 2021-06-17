@@ -21,7 +21,6 @@ def produtos(request):
 
     for produto in produtos['produtos']:
        context.update(produto)    
-    print(context)
     return render(request, "produto/produto_list2.html", context)
 
 
